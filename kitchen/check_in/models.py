@@ -23,3 +23,8 @@ class Lunch(models.Model):
 
     def __str__(self):
         return f'{self.employee} ate {self.meal.name} on {self.date}'
+
+    class Meta:
+        unique_together = (
+            ('employee', 'date'),
+        )
