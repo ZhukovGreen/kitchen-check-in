@@ -1,0 +1,66 @@
+{% extends 'bootstrap3/bootstrap3.html' %}
+{% load i18n %}
+
+{% load bootstrap3 static %}
+{% block bootstrap3_extra_head %}
+{% if form %}
+{{ form.media }}
+{% endif %}
+<script src="{% static 'js/lib/bootpag/lib/jquery.bootpag.js' %}" defer></script>
+<script src="{% static 'js/main.js' %}" defer></script>
+
+{% endblock %}
+{% block bootstrap3_title %}{% block title %}Lunch visitors{% endblock %}{% endblock %}
+
+{% block bootstrap3_content %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>{% trans 'Name' %}</th>
+        <th>{% trans 'Meal' %}</th>
+        <th>{% trans 'Attendance' %}</th>
+      </tr>
+    </thead>
+
+    <tfoot>
+      {% for visitor_lunch in visitor_lunches %}
+        <tr>
+          <td>{{ visitor_lunch.employee }}</td>
+          <td>{{ visitor_lunch.meal }}</td>
+          <td><strong>Checked in today</strong></td>
+        </tr>
+      {% endfor %}
+    </tfoot>
+
+    <tbody>
+      {% for visitor in hungry_visitors %}
+        <form method="post" class="form">
+          {% csrf_token %}
+          <tr>
+            <td>{{ visitor }}</td>
+            <td>MEAL_SELECTOR</td>
+            <td>
+            {% buttons %}
+              <button type="submit" class="btn btn-primary">
+                {% bootstrap_icon "star" %} Submit (CHECK_IN_BUTTON)
+              </button>
+            {% endbuttons %}
+            </td>
+          </tr>
+        </form>
+      {% endfor %}
+    </tbody>
+</table>
+
+{# Read the documentation for more information #}
+{% endblock bootstrap3_content %}
